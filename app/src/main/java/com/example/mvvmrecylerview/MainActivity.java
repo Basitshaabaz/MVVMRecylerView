@@ -1,10 +1,13 @@
 package com.example.mvvmrecylerview;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import com.example.mvvmrecylerview.adapters.RecyclerAdapter;
 import com.example.mvvmrecylerview.databinding.ActivityMainBinding;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 
         mMainActivityViewModel.getList().observe(this, users -> mAdapter.notifyDataSetChanged());
 
+        Log.d(TAG, "onCreate: ");
         mMainActivityViewModel.getIsUpdating().observe(this, aBoolean -> {
             if (aBoolean){
                 mBinding.progressbar.setVisibility(View.VISIBLE);
