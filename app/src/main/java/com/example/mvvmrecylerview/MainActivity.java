@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         initRecyclerView();
 
         mBinding.fab.setOnClickListener(view -> mMainActivityViewModel.addNewValue(new User(
-                "Basit Shaabaz"
+                "Basit Ali Hashmi"
                 ,"https://www.testim.io/wp-content/uploads/2019/11/Testim-What-is-a-Test-Environment_-A-Guide-to-Managing-Your-Testing-A.png")));
     }
 
