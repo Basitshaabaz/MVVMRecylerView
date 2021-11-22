@@ -3,17 +3,23 @@ package com.example.mvvmrecylerview;
 import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import com.example.mvvmrecylerview.adapters.RecyclerAdapter;
 import com.example.mvvmrecylerview.databinding.ActivityMainBinding;
 import com.example.mvvmrecylerview.models.User;
 import com.example.mvvmrecylerview.viewmodels.MainActivityViewModel;
 
+import java.util.List;
 
 
 //************************************************************
@@ -35,19 +41,24 @@ public class MainActivity extends AppCompatActivity
         mMainActivityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mMainActivityViewModel.init();
 
-        mMainActivityViewModel.getList().observe(this, users -> mAdapter.notifyDataSetChanged());
-
-        Log.d(TAG, "onCreate: ");
-        mMainActivityViewModel.getIsUpdating().observe(this, aBoolean -> {
-            if (aBoolean){
-                mBinding.progressbar.setVisibility(View.VISIBLE);
+        mMainActivityViewModel.getList().observe(this, new Observer<List<User>>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(List<User> users) {
+               mAdapter.notifyDataSetChanged();
             }
+        });
 
-            else
-            {
-                mBinding.progressbar.setVisibility(View.GONE);
-                mBinding.rvList.smoothScrollToPosition(mMainActivityViewModel.getList().getValue().size()-1);
+        mMainActivityViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    mBinding.progressbar.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.progressbar.setVisibility(View.GONE);
+                    mBinding.rvList.smoothScrollToPosition(mMainActivityViewModel.getList().getValue().size()-1);
 
+                }
             }
         });
         initRecyclerView();
